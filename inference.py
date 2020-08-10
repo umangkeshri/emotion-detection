@@ -1,3 +1,5 @@
+import os
+import uuid
 import argparse
 import numpy as np
 
@@ -24,8 +26,7 @@ def main(args):
 
     # start the webcam feed
     cap = cv2.VideoCapture(args.video)
-
-    if cap.isOpened() == False:
+    if cap.isOpened() is False:
         print("Error reading video file")
 
     frame_width = int(cap.get(3))
@@ -33,7 +34,10 @@ def main(args):
     size = (frame_width, frame_height)
 
     result = cv2.VideoWriter(
-        "sample_output.avi",
+        os.path.join(
+            os.path.dirname(args.video),
+            f"{uuid.uuid4()}_{os.path.basename(args.video)}",
+        ),
         cv2.VideoWriter_fourcc(*"MJPG"),
         cap.get(cv2.CAP_PROP_FPS),
         size,
